@@ -123,6 +123,7 @@ export const CircleOfLife: React.FunctionComponent<ICircleOfLifeProps> = ({
                   </SCircleContentText>
                 </SCircleContentItem>
               );
+            return null;
           })}
         </SCircleContentItems>
       </SCircleContent>
