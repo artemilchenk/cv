@@ -1,5 +1,5 @@
 import React from "react";
-import { SCircleOfLifeItem, SCircleOfLifeValue } from "./styled";
+import { SCircleOfLifeItem, SCircleOfLifeItemTitle } from "./styled";
 import { ICircleItem } from "./data";
 
 interface ICircleOfLifeItemProps {
@@ -13,9 +13,9 @@ export const CircleOfLifeItem: React.FunctionComponent<
 > = ({ data, defaultangle, priority }) => {
   return (
     <SCircleOfLifeItem defaultangle={defaultangle} priority={priority}>
-      <SCircleOfLifeValue defaultangle={defaultangle}>
+      <SCircleOfLifeItemTitle defaultangle={defaultangle}>
         {data.title}
-      </SCircleOfLifeValue>
+      </SCircleOfLifeItemTitle>
     </SCircleOfLifeItem>
   );
 };

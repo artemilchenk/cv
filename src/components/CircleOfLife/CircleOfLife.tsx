@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useRef } from "react";
+
 import { TCircleData } from "./data";
 import { CircleOfLifeItem } from "./CircleOfLifeItem";
+
 import {
+  SCircleContent,
+  SCircleContentItem,
+  SCircleContentItems,
+  SCircleContentText,
   SCircleOfLife,
   SCircleOfLifeArrow,
   SCircleOfLifeRotator,
+  SCircleOption,
 } from "./styled";
 
 function onRotate(
@@ -64,26 +72,88 @@ export const CircleOfLife: React.FunctionComponent<ICircleOfLifeProps> = ({
   data,
 }) => {
   const span = 360 / (data.length || 1);
+  const rotationTime = 1;
   const [rotateAngle, setRotateAngle] = useState<number>(0);
   const [activeItemId, setActiveItemId] = useState<number>(1);
+  const activeItemIdPrev = useRef(1);
+  const [rotateSpan, setRotaSpan] = useState(0);
 
   return (
     <SCircleOfLife>
-      <SCircleOfLifeRotator rotateangle={rotateAngle}>
+      <SCircleContent>
+        <SCircleContentItems>
+          {data.map((item) => {
+            if (
+              activeItemId === item.id ||
+              activeItemIdPrev.current === item.id
+            )
+              return (
+                <SCircleContentItem>
+                  <SCircleContentText
+                    active={activeItemId !== item.id}
+                    x={item.x}
+                    y={item.y}
+                  >
+                    {item.value.map((option) => {
+                      return (
+                        <SCircleOption>
+                          <div
+                            style={{
+                              display: "grid",
+                              textAlign: "start",
+                              wordBreak: "break-word",
+                            }}
+                          >
+                            {option.title}
+                          </div>
+                          <div
+                            style={{
+                              display: "grid",
+                              width: option?.largetext ? 132 : "",
+                              //background: "crimson",
+                              textAlign: "end",
+                              wordBreak: "break-word",
+                            }}
+                          >
+                            {option.value}
+                          </div>
+                        </SCircleOption>
+                      );
+                    })}
+                  </SCircleContentText>
+                </SCircleContentItem>
+              );
+          })}
+        </SCircleContentItems>
+      </SCircleContent>
+      <SCircleOfLifeRotator
+        rotateangle={rotateAngle}
+        rotatespan={rotateSpan}
+        rotationtime={rotationTime}
+      >
         <SCircleOfLifeArrow />
       </SCircleOfLifeRotator>
       {data.map((itemData, index) => {
         const defaultangle = span * index;
+
         return (
           <div
             key={itemData.id}
             onClick={() => {
+              setTimeout(() => {}, rotationTime * 1000);
+
               setActiveItemId((prevId) => {
+                activeItemIdPrev.current = prevId;
                 if (prevId === itemData.id) return prevId;
                 setRotateAngle((prevAngle) => {
-                  return (
-                    prevAngle + onRotate([...data], prevId, itemData.id, span)
+                  const distance = onRotate(
+                    [...data],
+                    prevId,
+                    itemData.id,
+                    span
                   );
+                  setRotaSpan(distance);
+                  return prevAngle + distance;
                 });
                 return itemData.id;
               });
