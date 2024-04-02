@@ -32,7 +32,7 @@ export const circleData: TCircleData = [
     title: "Link",
     value: [
       { title: "Instagram", value: "artem__ilchenko" },
-      { title: "Phone", value: "+380932143360" },
+      { title: "Phone", value: "+380936637141" },
       {
         title: "Linkedin",
         value: "linkedin.com/in/ilchenko-artem-228687230/",
